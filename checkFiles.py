@@ -5,7 +5,7 @@ import csv
 
 customers = ["Aurora","Banner","DH","CHI","Miami","Providence"]
 dirPointer = {"Aurora": "Folder1/","DH":"Folder2/","CHI":"FOLDER3/"}
-header = ['Customer','FileName','Total','IsICD9CodePresent?','IsICD10CodePresent?','Patients Count with ICD-9','Patients count with ICd-10','Patients count with Both']
+header = ['Customer','FileName','Total','IsICD9CodePresent?','IsICD10CodePresent?','Patients Count with ICD-9','Patients count with ICd-10','Patients count with Both','Patients With Any']
 
 outputJson = {}
 with open('output1.csv', 'a+') as output:
@@ -96,8 +96,15 @@ with open('output1.csv', 'a+') as output:
                      removeDupsdfWithBoth = dfWithBoth
                  outputJson[customer][f]["Both"] = len(removeDupsdfWithBoth)
 
+                 # Patients with any diagnosis code
 
+                 dfWithAnyDiagnosisCode = df[df[icd10_col].notnull() | df[icd_col].notnull()]
+                 if (any(dfWithAnyDiagnosisCode[pat_id].duplicated()) == True):
+                    removeDupsdfWithAny = dfWithAnyDiagnosisCode.drop_duplicates(pat_id)
+                 else:
+                     removeDupsdfWithAny = dfWithAnyDiagnosisCode
+                 outputJson[customer][f]["Any"] = len(removeDupsdfWithAny)
 
-                 writer.writerow([customer, f, total,isICD9CodePresent,isICD10CodePresent,len(removeDupsdfWithICD9Code),len(removeDupsdfWithICD10Code),len(removeDupsdfWithBoth)])
+                 writer.writerow([customer, f, total,isICD9CodePresent,isICD10CodePresent,len(removeDupsdfWithICD9Code),len(removeDupsdfWithICD10Code),len(removeDupsdfWithBoth),len(removeDupsdfWithAny)])
                  print(outputJson)
 
