@@ -2,9 +2,11 @@ import os
 import re
 import pandas
 import csv
+import sys
+
 
 customers = ["Aurora","Banner","DH","CHI","Miami","Providence"]
-dirPointer = {"Aurora": "Folder1/","DH":"Folder2/","CHI":"FOLDER3/"}
+dirPointer = {"Aurora": "/home/syapse-shared/aurora/prod_backload_10_25_2017/"}
 header = ['Customer','FileName','Total','IsICD9CodePresent?','IsICD10CodePresent?','Patients Count with ICD-9','Patients count with ICd-10','Patients count with Both','Patients With Any']
 
 outputJson = {}
@@ -20,6 +22,8 @@ with open('output1.csv', 'a+') as output:
              print(files)
              for f in files:
                  filePath = dir + f
+                 print 'reading file: '+filePath
+                 sys.stdout.flush()
                  df = pandas.read_csv(filePath)
                  outputJson[customer][f] = {}
                  isICD9CodePresent = "Yes"
