@@ -1,0 +1,14 @@
+{
+  "CUSTOMERS": {
+    "AURORA": {
+      "Diagnosis": "Folder1/"
+    },
+    "Banner": {
+      "Diagnosis": "Folder2/"
+    }
+  },
+  "OUTPUT": {
+    "DIR": "Folder3/",
+    "filename": "output.csv"
+  }
+}
